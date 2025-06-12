@@ -2,6 +2,8 @@ import { Button, Text } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
 import useLogout from "../hooks/useLogout";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export const SettingsPage = () => {
 	const showToast = useShowToast();
 	const logout = useLogout();
@@ -10,7 +12,7 @@ export const SettingsPage = () => {
 		if (!window.confirm("Are you sure you want to freeze your account?")) return;
 
 		try {
-			const res = await fetch("/api/users/freeze", {
+			const res = await fetch(`${API_BASE_URL}/api/users/freeze`, {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 			});

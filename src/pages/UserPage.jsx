@@ -8,6 +8,8 @@ import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
 	const { username } = useParams();
@@ -20,7 +22,7 @@ const UserPage = () => {
 			if (!user) return;
 			setFetchingPosts(true);
 			try {
-				const res = await fetch(`/api/posts/user/${username}`);
+				const res = await fetch(`${API_BASE_URL}/api/posts/user/${username}`);
 				const data = await res.json();
 				console.log(data);
 				setPosts(data);

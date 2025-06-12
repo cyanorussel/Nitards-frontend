@@ -21,6 +21,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { BsFillImageFill } from "react-icons/bs";
 import usePreviewImg from "../hooks/usePreviewImg";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const MessageInput = ({ setMessages }) => {
 	const [messageText, setMessageText] = useState("");
 	const showToast = useShowToast();
@@ -39,7 +41,7 @@ const MessageInput = ({ setMessages }) => {
 		setIsSending(true);
 
 		try {
-			const res = await fetch("/api/messages", {
+			const res = await fetch(`${API_BASE_URL}/api/messages`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
