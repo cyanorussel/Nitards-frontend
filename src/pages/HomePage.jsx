@@ -17,7 +17,13 @@ const HomePage = () => {
 			setLoading(true);
 			setPosts([]);
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/posts/feed`);
+				const res = await fetch(`${API_BASE_URL}/api/posts/feed`, {
+					method: "POST", // <-- change to POST
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -33,6 +39,8 @@ const HomePage = () => {
 		};
 		getFeedPosts();
 	}, [showToast, setPosts]);
+
+	console.log("API_BASE_URL:", API_BASE_URL);
 
 	return (
 		<Flex gap='10' alignItems={"flex-start"}>
