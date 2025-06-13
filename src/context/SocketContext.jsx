@@ -14,11 +14,14 @@ export const SocketContextProvider = ({ children }) => {
 	const [onlineUsers, setOnlineUsers] = useState([]);
 	const user = useRecoilValue(userAtom);
 
+	const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+
 	useEffect(() => {
-		const socket = io("/", {
+		const socket = io(SOCKET_URL, {
 			query: {
 				userId: user?._id,
 			},
+			withCredentials: true, // <-- Add this if your backend requires authentication
 		});
 
 		setSocket(socket);

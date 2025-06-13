@@ -23,7 +23,9 @@ const Post = ({ post, postedBy }) => {
 	useEffect(() => {
 		const getUser = async () => {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/users/profile/${postedBy}`);
+				const res = await fetch(`${API_BASE_URL}/api/users/profile/${postedBy}`, {
+					credentials: "include", // <-- Add this line if authentication is required
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -46,6 +48,7 @@ const Post = ({ post, postedBy }) => {
 
 			const res = await fetch(`${API_BASE_URL}/api/posts/${post._id}`, {
 				method: "DELETE",
+				credentials: "include", // <-- Add this line
 			});
 			const data = await res.json();
 			if (data.error) {

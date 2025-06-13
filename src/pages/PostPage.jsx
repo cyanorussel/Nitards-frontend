@@ -27,7 +27,9 @@ const PostPage = () => {
 		const getPost = async () => {
 			setPosts([]);
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/posts/${pid}`);
+				const res = await fetch(`${API_BASE_URL}/api/posts/${pid}`, {
+					credentials: "include",
+				});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
@@ -47,6 +49,7 @@ const PostPage = () => {
 
 			const res = await fetch(`${API_BASE_URL}/api/posts/${currentPost._id}`, {
 				method: "DELETE",
+				credentials: "include",
 			});
 			const data = await res.json();
 			if (data.error) {

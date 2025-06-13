@@ -13,7 +13,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
 	const { username } = useParams();
-	const showToast = useShowToast();
+		const showToast = useShowToast();
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
 
@@ -22,7 +22,9 @@ const UserPage = () => {
 			if (!user) return;
 			setFetchingPosts(true);
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/posts/user/${username}`);
+				const res = await fetch(`${API_BASE_URL}/api/posts/user/${username}`, {
+					credentials: "include", // <-- Add this line
+				});
 				const data = await res.json();
 				console.log(data);
 				setPosts(data);

@@ -17,6 +17,7 @@ const LogoutButton = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include", // <-- Add this line
             });
             const data = await res.json();
 

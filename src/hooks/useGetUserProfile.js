@@ -13,7 +13,9 @@ const useGetUserProfile = () => {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const res = await fetch(`${API_BASE_URL}/api/users/profile/${username}`);
+                const res = await fetch(`${API_BASE_URL}/api/users/profile/${username}`, {
+                    credentials: "include", // <-- Add this line if authentication is required
+                });
                 const data = await res.json();
                 if (data.error) {
                     showToast("Error", data.error, "error");

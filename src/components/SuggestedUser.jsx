@@ -69,3 +69,12 @@ export default SuggestedUser;
 			</Button>
 		</Flex> */
 }
+
+// Inside useFollowUnfollow.js (or .jsx)
+const res = await fetch(`${API_BASE_URL}/api/users/follow/${userId}`, {
+    method: "POST", // or "PUT" depending on your API
+    headers: {
+        "Content-Type": "application/json",
+    },
+    credentials: "include", // <-- This is required!
+});

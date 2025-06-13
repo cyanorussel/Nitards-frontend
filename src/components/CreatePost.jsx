@@ -65,6 +65,7 @@ const CreatePost = () => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl }),
+				credentials: "include", // <-- Add this line
 			});
 
 			const data = await res.json();

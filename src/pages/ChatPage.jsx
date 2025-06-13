@@ -19,7 +19,7 @@ const ChatPage = () => {
 	const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationAtom);
 	const [conversations, setConversations] = useRecoilState(conversationsAtom);
 	const currentUser = useRecoilValue(userAtom);
-	const showToast = useShowToast();
+		const showToast = useShowToast();
 	const { socket, onlineUsers } = useSocket();
 
 	useEffect(() => {
@@ -45,7 +45,9 @@ const ChatPage = () => {
 	useEffect(() => {
 		const getConversations = async () => {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/messages/conversations`);
+				const res = await fetch(`${API_BASE_URL}/api/messages/conversations`, {
+    credentials: "include", // <-- Add this line
+});
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
