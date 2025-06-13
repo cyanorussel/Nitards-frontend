@@ -11,11 +11,3 @@ export default defineConfig({
         'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
     },
 });
-
-// Use this in your API calls
-const API_BASE_URL = import.meta.env.VITE_API_URL;
-
-// Example fetch
-fetch(`${API_BASE_URL}/api/your-endpoint`)
-  .then(res => res.json())
-  .then(data => console.log(data));
