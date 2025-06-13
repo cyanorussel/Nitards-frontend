@@ -18,7 +18,7 @@ const HomePage = () => {
 			setPosts([]);
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/posts/feed`, {
-					method: "GET", // <-- change to POST
+					method: "POST", // <-- change to POST
 					credentials: "include",
 					headers: {
 						"Content-Type": "application/json",
