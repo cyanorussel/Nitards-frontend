@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import SuggestedUsers from "../components/SuggestedUsers";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -12,24 +13,30 @@ const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		const getFeedPosts = async () => {
 			setLoading(true);
 			setPosts([]);
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/posts/feed`, {
-					method: "POST", // <-- change to POST
+					method: "POST",
 					credentials: "include",
 					headers: {
 						"Content-Type": "application/json",
 					},
 				});
+				if (res.status === 401) {
+					showToast("Unauthorized", "Please log in to view your feed.", "error");
+					navigate("/auth");
+					return;
+				}
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
 					return;
 				}
-				console.log(data);
 				setPosts(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -38,14 +45,12 @@ const HomePage = () => {
 			}
 		};
 		getFeedPosts();
-	}, [showToast, setPosts]);
-
-	console.log("API_BASE_URL:", API_BASE_URL);
+	}, [showToast, setPosts, navigate]);
 
 	return (
 		<Flex gap='10' alignItems={"flex-start"}>
 			<Box flex={70}>
-				{!loading && posts.length === 0 && <h1>Follow some users to see the feed</h1>}
+				{!loading && Array.isArray(posts) && posts.length === 0 && <h1>Follow some users to see the feed</h1>}
 
 				{loading && (
 					<Flex justify='center'>
@@ -53,7 +58,7 @@ const HomePage = () => {
 					</Flex>
 				)}
 
-				{posts.map((post) => (
+				{Array.isArray(posts) && posts.map((post) => (
 					<Post key={post._id} post={post} postedBy={post.postedBy} />
 				))}
 			</Box>
