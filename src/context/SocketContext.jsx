@@ -17,13 +17,16 @@ export const SocketContextProvider = ({ children }) => {
 	const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 	useEffect(() => {
+		if (!user?._id) {
+			setSocket(null);
+			return;
+		}
 		const socket = io(SOCKET_URL, {
 			query: {
-				userId: user?._id,
+				userId: user._id,
 			},
-			withCredentials: true, // <-- Add this if your backend requires authentication
+			withCredentials: true,
 		});
-
 		setSocket(socket);
 
 		socket.on("getOnlineUsers", (users) => {
