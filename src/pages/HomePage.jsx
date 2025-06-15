@@ -13,7 +13,7 @@ const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
-	const navigate = useNavigate();
+		const navigate = useNavigate();
 
 	useEffect(() => {
 		const getFeedPosts = async () => {
@@ -21,7 +21,7 @@ const HomePage = () => {
 			setPosts([]);
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/posts/feed`, {
-					method: "POST",
+					method: "GET", // <-- Change POST to GET
 					credentials: "include",
 					headers: {
 						"Content-Type": "application/json",
