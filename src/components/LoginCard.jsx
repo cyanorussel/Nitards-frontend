@@ -50,7 +50,7 @@ export default function LoginCard() {
 				setLoading(false); // <-- Add this
 				return;
 			}
-			localStorage.setItem("user-threads", JSON.stringify(data));
+			localStorage.setItem("user-nitards", JSON.stringify(data));
 			setUser(data);
 			setLoading(false); // <-- Add this
 		} catch (error) {
