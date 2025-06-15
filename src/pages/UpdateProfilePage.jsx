@@ -10,7 +10,7 @@ import {
 	Avatar,
 	Center,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
@@ -29,6 +29,8 @@ export default function UpdateProfilePage() {
 	});
 	const fileRef = useRef(null);
 	const [updating, setUpdating] = useState(false);
+	const [suggestedUsers, setSuggestedUsers] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	const showToast = useShowToast();
 
@@ -61,6 +63,39 @@ export default function UpdateProfilePage() {
 			setUpdating(false);
 		}
 	};
+
+	useEffect(() => {
+		const getSuggestedUsers = async () => {
+			setLoading(true);
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/users/suggested`, {
+					credentials: "include",
+				});
+				if (res.status === 401) {
+					showToast("Unauthorized", "Please log in to see suggestions.", "error");
+					window.location.href = "/auth"; // or use navigate if you have access
+					return;
+				}
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					return;
+				}
+				if (!Array.isArray(data)) {
+					setSuggestedUsers([]);
+					return;
+				}
+				setSuggestedUsers(data);
+			} catch (error) {
+				showToast("Error", error.message, "error");
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		getSuggestedUsers();
+	}, [showToast]);
+
 	return (
 		<form onSubmit={handleSubmit}>
 			<Flex align={"center"} justify={"center"} my={6}>

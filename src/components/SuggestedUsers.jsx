@@ -2,36 +2,49 @@ import { Box, Flex, Skeleton, SkeletonCircle, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import SuggestedUser from "./SuggestedUser";
 import useShowToast from "../hooks/useShowToast";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const SuggestedUsers = () => {
-	const [loading, setLoading] = useState(true);
 	const [suggestedUsers, setSuggestedUsers] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const getSuggestedUsers = async () => {
 			setLoading(true);
 			try {
 				const res = await fetch(`${API_BASE_URL}/api/users/suggested`, {
-					credentials: "include", // <-- Add this if authentication is required
+					credentials: "include",
 				});
+				if (res.status === 401) {
+					showToast("Unauthorized", "Please log in to see suggestions.", "error");
+					navigate("/auth");
+					return;
+				}
 				const data = await res.json();
 				if (data.error) {
 					showToast("Error", data.error, "error");
+					setSuggestedUsers([]);
+					return;
+				}
+				if (!Array.isArray(data)) {
+					setSuggestedUsers([]);
 					return;
 				}
 				setSuggestedUsers(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
+				setSuggestedUsers([]);
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		getSuggestedUsers();
-	}, [showToast]);
+	}, [showToast, navigate]);
 
 	return (
 		<>
@@ -39,7 +52,9 @@ const SuggestedUsers = () => {
 				Suggested Users
 			</Text>
 			<Flex direction={"column"} gap={4}>
-				{!loading && suggestedUsers.map((user) => <SuggestedUser key={user._id} user={user} />)}
+				{Array.isArray(suggestedUsers) &&
+					!loading &&
+					suggestedUsers.map((user) => <SuggestedUser key={user._id} user={user} />)}
 				{loading &&
 					[0, 1, 2, 3, 4].map((_, idx) => (
 						<Flex key={idx} gap={2} alignItems={"center"} p={"1"} borderRadius={"md"}>
