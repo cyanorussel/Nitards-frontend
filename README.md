@@ -2,6 +2,23 @@
 
 A modern social networking web application inspired by Threads, built with React, Chakra UI, Recoil, and Vite. Users can create posts, follow others, chat in real-time, and manage their profiles.
 
+## Feature List
+
+-   🌟 Tech stack: MERN + Socket.io + Chakra UI
+-   🎃 Authentication & Authorization with JWT
+-   📝 Create Post
+-   🗑️ Delete Post
+-   ❤️ Like/Unlike Post
+-   💬 Comment to a Post
+-   👥 Follow/Unfollow Users
+-   ❄️ Freeze Your Account
+-   🌓 Dark/Light Mode
+-   📱 Completely Responsive
+-   💬 Chat App With Image Support
+-   👀 Seen/Unseen Status for Messages
+-   🔊 Notification sounds
+-   ⭐ Deployment for FREE
+
 ## Features
 
 - User authentication (signup, login, logout)
@@ -31,8 +48,6 @@ src/
   main.jsx         # App entry point
   App.jsx          # Main app component
 ```
-
-
 
 ---
 
